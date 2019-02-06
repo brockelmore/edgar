@@ -401,7 +401,7 @@ func collectDataTags(page io.Reader) map[string]string {
 			}
 		})
 		row.Values = values
-		dataTable.Row[text] = row
+		dataTable.Rows[text] = row
 	})
 	var headers []string
 	doc.Find(".report th").Each(func(i int, s2 *goquery.Selection) {
