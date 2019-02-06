@@ -328,6 +328,7 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 	data, err := parseTableRow(z, true)
 	for err == nil {
 		if len(data) > 0 {
+			log.Println(data[0])
 			finType := getFinDataTypeFromXBRLTag(data[0])
 			if finType != finDataUnknown {
 				for _, str := range data[1:] {
