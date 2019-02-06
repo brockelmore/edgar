@@ -342,75 +342,66 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 	return fr, nil
 }
 
-type DataTable struct {
-	Headers []string `json:"Headers"`
-	Rows map[string]Row `json:"Links"`
-}
 
-type Row struct {
-	Tag string `json:"Tag"`
-	Values []string	 `json:"Values"`
-}
 
 func collectDataTags(page io.Reader) DataTable {
-// 	dataTags := make(map[string]string)
-	var dataTable DataTable
-	dataTable.Rows = make(map[string]Row)
+	dataTags := make(map[string]string)
+// 	dataTable.Rows = make(map[string]Row)
 	doc, _ := goquery.NewDocumentFromReader(page)
-// 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
-//     		// For each item found, get the band and title
-// 		text := s.Text()
-// 		link, _ := s.Attr("onclick")
-// 		if link[:23] == "top.Show.showAR( this, " {
-// 			link = link[15:len(link)-1]
-// 			h := strings.Split(link, " ")
-// 			link = h[2][1:len(h[2]) - 2]
-// // 			if text[len(text)] == byte(colon) {
-// // 				dataTags[text[:len(text)-1]] = link
-// // 			log.Printf("%s: %s\n", text[:len(text)], link)
-// // 			} else {
-// // 				dataTags[text] = link
-// // 				log.Printf("%s: %s\n", text, link)
-// // 			}
-// // 			log.Println(text[len(text)-1])
-// 			dataTags[text] = link
-// 			dataTable[text]["link"] = link
-// 		}
-//   	})
-	doc.Find(".report tbody tr").Each(func(i int, s3 *goquery.Selection) {
-		var text string
-		var row Row
-		s3.Find("a").Each(func(i int, s *goquery.Selection) {
-		// For each item found, get the band and title
-			text = s.Text()
-			link, _ := s.Attr("onclick")
-			if link[:23] == "top.Show.showAR( this, " {
-				link = link[15:len(link)-1]
-				h := strings.Split(link, " ")
-				link = h[2][1:len(h[2]) - 2]
+	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
+    		// For each item found, get the band and title
+		text := s.Text()
+		link, _ := s.Attr("onclick")
+		if link[:23] == "top.Show.showAR( this, " {
+			link = link[15:len(link)-1]
+			h := strings.Split(link, " ")
+			link = h[2][1:len(h[2]) - 2]
+// 			if text[len(text)] == byte(colon) {
+// 				dataTags[text[:len(text)-1]] = link
+// 			log.Printf("%s: %s\n", text[:len(text)], link)
+// 			} else {
 // 				dataTags[text] = link
-				row.Tag = link
-			}
-		})
-		var values []string
-		s3.Find("td").Each(func(i int, s2 *goquery.Selection) {
-			if i == 0 {
-			} else {
-				if s2.Text() != " " {
-					values = append(values, s2.Text())
-				}
-			}
-		})
-		row.Values = values
-		dataTable.Rows[text] = row
-	})
-	var headers []string
-	doc.Find(".report th").Each(func(i int, s2 *goquery.Selection) {
-			headers = append(headers, s2.Text())
-	})
-	dataTable.Headers = headers
+// 				log.Printf("%s: %s\n", text, link)
+// 			}
+// 			log.Println(text[len(text)-1])
+			dataTags[text] = link
+// 			dataTable[text]["link"] = link
+		}
+//   	})
+// 	doc.Find(".report tbody tr").Each(func(i int, s3 *goquery.Selection) {
+// 		var text string
+// 		var row Row
+// 		s3.Find("a").Each(func(i int, s *goquery.Selection) {
+// 		// For each item found, get the band and title
+// 			text = s.Text()
+// 			link, _ := s.Attr("onclick")
+// 			if link[:23] == "top.Show.showAR( this, " {
+// 				link = link[15:len(link)-1]
+// 				h := strings.Split(link, " ")
+// 				link = h[2][1:len(h[2]) - 2]
+// // 				dataTags[text] = link
+// 				row.Tag = link
+// 			}
+// 		})
+// 		var values []string
+// 		s3.Find("td").Each(func(i int, s2 *goquery.Selection) {
+// 			if i == 0 {
+// 			} else {
+// 				if s2.Text() != " " {
+// 					values = append(values, s2.Text())
+// 				}
+// 			}
+// 		})
+// 		row.Values = values
+// 		dataTable.Rows[text] = row
+// 	})
+// 	var headers []string
+// 	doc.Find(".report th").Each(func(i int, s2 *goquery.Selection) {
+// 			headers = append(headers, s2.Text())
+// 	})
+// 	dataTable.Headers = headers
 // 	log.Println(dataTable)
-	return dataTable
+	return dataTags
 }
 
 // parseAllReports gets all the reports filed under a given account normalizeNumber
@@ -440,7 +431,7 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 	var wg sync.WaitGroup
 // 	dataTags := make(map[string]map[string]string)
 	fr := newFinancialReport(docType)
-	fr.DataTags = make(map[string]DataTable)
+	fr.DataTags = make(map[string]map[string]string)
 	for t, url := range docs {
 		wg.Add(1)
 		go func(url string, fr *financialReport, t filingDocType) {
