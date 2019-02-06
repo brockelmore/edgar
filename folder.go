@@ -75,6 +75,10 @@ func (c *company) Filing(fileType FilingType, key Date) (Filing, error) {
 	return file, nil
 }
 
+func (c *company) Cik() string {
+	return c.CIK
+}
+
 func (c *company) AddReport(file *filing) {
 	t, err := file.Type()
 	if err != nil {
