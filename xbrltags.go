@@ -91,7 +91,7 @@ var (
 		"PaymentsToAcquireProductiveAssets":                                             finDataCapEx,
 		"defref_us-gaap_CapitalExpendituresAndInvestments":                              finDataCapEx,
 		"CapitalExpendituresAndInvestments":                                             finDataCapEx,
-		"defref_us-gaap_PropertyPlantAndEquipmentAdditions",				 finDataCapEx,
+		"defref_us-gaap_PropertyPlantAndEquipmentAdditions":				 finDataCapEx,
 		"defref_us-gaap_PaymentsOfDividends":                                            finDataDividend,
 		"PaymentsOfDividends":                                                           finDataDividend,
 		"defref_us-gaap_PaymentsOfDividendsCommonStock":                                 finDataDividend,
