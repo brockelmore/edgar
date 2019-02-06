@@ -355,6 +355,7 @@ type Row struct {
 func collectDataTags(page io.Reader) map[string]string {
 	dataTags := make(map[string]string)
 	var dataTable DataTable
+	dataTable.Rows = make(map[string]Row)
 	doc, _ := goquery.NewDocumentFromReader(page)
 // 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
 //     		// For each item found, get the band and title
