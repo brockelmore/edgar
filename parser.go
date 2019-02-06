@@ -140,12 +140,12 @@ func parseTableData(z *html.Tokenizer, parseHref bool) string {
 		if parseHref && token.Data == "a" && token.Type == html.StartTagToken {
 			str := parseHyperLinkTag(z, token)
 			if len(str) > 0 {
-				log.Println(strings.TrimSpace(token.String()))
 				return str
 			}
 		} else {
 			if token.Type == html.TextToken {
 				str := strings.TrimSpace(token.String())
+				log.Println(str)
 				if len(str) > 0 {
 					return str
 				}
