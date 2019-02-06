@@ -393,7 +393,7 @@ func parseAllReports(cik string, an string) []int {
 
 func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*financialReport, error) {
 	var wg sync.WaitGroup
-	dataTags := make(map[string]map[string]string)
+// 	dataTags := make(map[string]map[string]string)
 	fr := newFinancialReport(docType)
 	for t, url := range docs {
 		wg.Add(1)
@@ -404,7 +404,7 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 				var dataTags map[string]string
 				page2 := getPage(url)
 				dataTagsSub := collectDataTags(page2)
-				dataTags[string(t)] = dataTagsSub
+				fr.DataTags[string(t)] = dataTagsSub
 				finReportParser(page, fr, t)
 			}
 		}(baseURL+url, fr, t, dataTags)
