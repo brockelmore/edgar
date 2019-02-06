@@ -363,7 +363,7 @@ func collectDataTags(page io.Reader) map[string]string {
 // 			}
 // 			log.Println(text[len(text)-1])
 			if dataTags[text] == nil {
-			    dataTags[text] = map[string]string{}
+			    dataTags[text] = string{}
 			}
 			dataTags[text] = link
 		}
