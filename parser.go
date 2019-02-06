@@ -153,7 +153,6 @@ func parseTableData(z *html.Tokenizer, parseHref bool) string {
 		//Going for the end of the td tag
 		z.Next()
 		token = z.Token()
-		log.Println(token.String())
 	}
 	return ""
 }
@@ -214,6 +213,7 @@ func parseHyperLinkTag(z *html.Tokenizer, token html.Token) string {
 			href = a.Val
 		case "onclick":
 			onclick = a.Val
+			log.Println(a.Text())
 			if str, err := getFinDataXBRLTag(onclick); err == nil {
 				return str
 			}
