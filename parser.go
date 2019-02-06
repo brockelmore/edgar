@@ -339,16 +339,20 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 		}
 		data, err = parseTableRow(z, true)
 	}
+	return fr, nil
+}
+
+
+func collectDataTags(page io.Reader) {
 	doc, err := goquery.NewDocumentFromReader(page)
 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
     		// For each item found, get the band and title
 		text := s.Text()
 		link, _ := s.Attr("onclick")
-		if link[:22] == "top.Show.showAR( this, " {
+		if link[:23] == "top.Show.showAR( this, " {
 			log.Printf("%s: %s\n", text, link)
 		}
-  	})
-	return fr, nil
+  	})	
 }
 
 // parseAllReports gets all the reports filed under a given account normalizeNumber
@@ -359,6 +363,8 @@ func parseAllReports(cik string, an string) []int {
 	page := getPage(url)
 	z := html.NewTokenizer(page)
 	data, err := parseTableRow(z, false)
+	page2 := getPage(url)
+	collectDataTags(page2)
 	for err == nil {
 		var num int
 		if len(data) > 0 && strings.Contains(data[0], "R") {
