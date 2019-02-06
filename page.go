@@ -28,12 +28,34 @@ func getPage(url string) io.ReadCloser {
 }
 
 func getCompanyCIK(ticker string) string {
-	url := fmt.Sprintf(cikURL, ticker)
-	r := getPage(url)
-	if r != nil {
-		if cik, err := cikPageParser(r); err == nil {
+	fmt.Println("getting company CIK")
+	var t bool
+	if strings.Contains(ticker, " ") {
+		t = true
+	} else {
+		url1 := fmt.Sprintf(cikURL, ticker)
+		r := getPage(url1)
+		rb, _ := ioutil.ReadAll(r)
+		t = strings.Contains(string(rb),"No matching Ticker Symbol.")
+	}
+	switch {
+	case t == false:
+		url1 := fmt.Sprintf(cikURL, ticker)
+		r2  := getPage(url1)
+		if cik, err := cikPageParser(r2); err == nil {
 			return cik
 		}
+	case t == true:
+		r := postPage(backupCIK, ticker)
+		if r != nil {
+			if cik, err := cikPostPageParser(r); err == nil {
+				fmt.Println(cik)
+				return cik
+			}
+		}
+	default:
+		fmt.Println("in default")
+	   return ""
 	}
 	return ""
 }
