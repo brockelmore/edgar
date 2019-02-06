@@ -342,10 +342,19 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 	return fr, nil
 }
 
+type DataTable struct {
+	Headers []string `json:"Headers"`
+	Rows map[string]Row `json:"Links"`
+}
+
+type Row struct {
+	Tag string `json:"Tag"`
+	Values []string	 `json:"Values"`
+}
 
 func collectDataTags(page io.Reader) map[string]string {
 	dataTags := make(map[string]string)
-	dataTable := make(map[string]interface{})
+	var dataTable DataTable
 	doc, _ := goquery.NewDocumentFromReader(page)
 // 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
 //     		// For each item found, get the band and title
@@ -369,19 +378,17 @@ func collectDataTags(page io.Reader) map[string]string {
 //   	})
 	doc.Find(".report tbody tr").Each(func(i int, s3 *goquery.Selection) {
 		var text string
-		
+		var row Row
 		s3.Find("a").Each(func(i int, s *goquery.Selection) {
 		// For each item found, get the band and title
 			text = s.Text()
-			dataTable[text] = dataTable[text].(map[string]interface{})
 			link, _ := s.Attr("onclick")
 			if link[:23] == "top.Show.showAR( this, " {
 				link = link[15:len(link)-1]
 				h := strings.Split(link, " ")
 				link = h[2][1:len(h[2]) - 2]
 				dataTags[text] = link
-				dataTable[text]["link"] = dataTable[text]["link"].(string)
-				dataTable[text]["link"] = link
+				row.Tag = link
 			}
 		})
 		var values []string
@@ -393,16 +400,14 @@ func collectDataTags(page io.Reader) map[string]string {
 				}
 			}
 		})
-		dataTable[text]["values"] = values
-		var headers []string
-		
-		s3.Find("th").Each(func(i int, s2 *goquery.Selection) {
-			headers = append(headers, s2.Text())
-		})
-		
-		dataTable["headers"] = headers
-		
+		row.Values = values
+		dataTable[text] = row
 	})
+	var headers []string
+	doc.Find(".report th").Each(func(i int, s2 *goquery.Selection) {
+			headers = append(headers, s2.Text())
+	})
+	dataTable.Headers = headers
 	log.Println(dataTable)
 	return dataTags
 }
