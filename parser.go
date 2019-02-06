@@ -370,7 +370,6 @@ func collectDataTags(page io.Reader) map[string]string {
 
 // parseAllReports gets all the reports filed under a given account normalizeNumber
 func parseAllReports(cik string, an string) []int {
-
 	var reports []int
 	url := "https://www.sec.gov/Archives/edgar/data/" + cik + "/" + an + "/"
 	page := getPage(url)
@@ -394,6 +393,7 @@ func parseAllReports(cik string, an string) []int {
 
 func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*financialReport, error) {
 	var wg sync.WaitGroup
+	dataTags := make(map[string]map[string]string)
 	fr := newFinancialReport(docType)
 	for t, url := range docs {
 		wg.Add(1)
@@ -403,13 +403,14 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 			if page != nil {
 				var dataTags map[string]string
 				page2 := getPage(url)
-				dataTags = collectDataTags(page2)
-				fr.DataTags[string(docType)] = dataTags
+				dataTagsSub = collectDataTags(page2)
+				dataTags[string(docType)] = dataTagsSub
 				finReportParser(page, fr, t)
 			}
 		}(baseURL+url, fr, t)
 	}
 	wg.Wait()
+	fr.DataTags = dataTags
 	log.Println(fr)
 	return fr, validateFinancialReport(fr)
 }
