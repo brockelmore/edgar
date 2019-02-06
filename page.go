@@ -13,6 +13,7 @@ import (
 var (
 	baseURL   string = "https://www.sec.gov/"
 	cikURL    string = "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&output=xml&CIK=%s"
+	backupCIK string = "https://www.sec.gov/cgi-bin/cik_lookup"
 	queryURL  string = "cgi-bin/browse-edgar?action=getcompany&CIK=%s&type=%s&dateb=&owner=exclude&count=10"
 	searchURL string = baseURL + queryURL
 )
