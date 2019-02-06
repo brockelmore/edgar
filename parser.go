@@ -367,7 +367,7 @@ func collectDataTags(page io.Reader) DataTable {
 			dataTags[text] = link
 // 			dataTable[text]["link"] = link
 		}
-//   	})
+  	})
 // 	doc.Find(".report tbody tr").Each(func(i int, s3 *goquery.Selection) {
 // 		var text string
 // 		var row Row
