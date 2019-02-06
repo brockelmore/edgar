@@ -401,7 +401,6 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 			defer wg.Done()
 			page := getPage(url)
 			if page != nil {
-				var dataTags map[string]string
 				page2 := getPage(url)
 				dataTagsSub := collectDataTags(page2)
 				fr.DataTags[string(t)] = dataTagsSub
