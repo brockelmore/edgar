@@ -352,8 +352,8 @@ type Row struct {
 	Values []string	 `json:"Values"`
 }
 
-func collectDataTags(page io.Reader) map[string]string {
-	dataTags := make(map[string]string)
+func collectDataTags(page io.Reader) DataTable {
+// 	dataTags := make(map[string]string)
 	var dataTable DataTable
 	dataTable.Rows = make(map[string]Row)
 	doc, _ := goquery.NewDocumentFromReader(page)
@@ -388,7 +388,7 @@ func collectDataTags(page io.Reader) map[string]string {
 				link = link[15:len(link)-1]
 				h := strings.Split(link, " ")
 				link = h[2][1:len(h[2]) - 2]
-				dataTags[text] = link
+// 				dataTags[text] = link
 				row.Tag = link
 			}
 		})
@@ -409,8 +409,8 @@ func collectDataTags(page io.Reader) map[string]string {
 			headers = append(headers, s2.Text())
 	})
 	dataTable.Headers = headers
-	log.Println(dataTable)
-	return dataTags
+// 	log.Println(dataTable)
+	return dataTable
 }
 
 // parseAllReports gets all the reports filed under a given account normalizeNumber
