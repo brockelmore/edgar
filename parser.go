@@ -347,12 +347,12 @@ func collectDataTags(page io.Reader) {
 	doc, _ := goquery.NewDocumentFromReader(page)
 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
     		// For each item found, get the band and title
-// 		text := s.Text()
+		text := s.Text()
 		link, _ := s.Attr("onclick")
 		log.Println(link[:23])
-// 		if link[:23] == "top.Show.showAR( this, " {
-// 			log.Printf("%s: %s\n", text, link)
-// 		}
+		if link[:23] == "top.Show.showAR( this, " {
+			log.Printf("%s: %s\n", text, link)
+		}
   	})	
 }
 
