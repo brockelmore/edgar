@@ -369,9 +369,11 @@ func collectDataTags(page io.Reader) map[string]string {
 //   	})
 	doc.Find(".report tbody tr").Each(func(i int, s3 *goquery.Selection) {
 		var text string
+		
 		s3.Find("a").Each(func(i int, s *goquery.Selection) {
 		// For each item found, get the band and title
 			text = s.Text()
+			dataTable[text] = make(map[string]interface{})
 			link, _ := s.Attr("onclick")
 			if link[:23] == "top.Show.showAR( this, " {
 				link = link[15:len(link)-1]
