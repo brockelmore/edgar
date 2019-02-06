@@ -41,6 +41,7 @@ var (
 		"defref_us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax":                                                         finDataRevenue,
 		"RevenueFromContractWithCustomerExcludingAssessedTax":                                                                        finDataRevenue,
 		"defref_us-gaap_SalesRevenueServicesNet":										      finDataRevenue,
+		"defref_us-gaap_RevenueFromContractWithCustomerIncludingAssessedTax":							      finDataRevenue,
 		"defref_us-gaap_CostOfRevenue":                                                                                               finDataCostOfRevenue,
 		"defref_us-gaap_CostOfGoodsAndServicesSold":                                                                                  finDataCostOfRevenue,
 		"CostOfGoodsAndServicesSold":                                                                                                 finDataCostOfRevenue,
