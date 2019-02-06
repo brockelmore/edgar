@@ -11,6 +11,7 @@ type financialReport struct {
 	Ops     *opsData    `json:"Operational Information"`
 	Bs      *bsData     `json:"Balance Sheet Information"`
 	Cf      *cfData     `json:"Cash Flow Information"`
+	DataTags map[string]string `json:"DataTags"`
 }
 
 type entityData struct {
