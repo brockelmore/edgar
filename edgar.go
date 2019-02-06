@@ -66,7 +66,8 @@ type CompanyFolder interface {
 	// the fetcher (using CreateFolder API in fetcher) to recreate the
 	// company folder with already parsed data
 	SaveFolder(w io.Writer) error
-
+	
+	Cik() string
 	// String is a dump routine to view the contents of the folder
 	String() string
 }
