@@ -140,6 +140,7 @@ func parseTableData(z *html.Tokenizer, parseHref bool) string {
 		if parseHref && token.Data == "a" && token.Type == html.StartTagToken {
 			str := parseHyperLinkTag(z, token)
 			if len(str) > 0 {
+				log.Println(str)
 				return str
 			}
 		} else {
@@ -328,7 +329,6 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 	data, err := parseTableRow(z, true)
 	for err == nil {
 		if len(data) > 0 {
-			log.Println(data[0])
 			finType := getFinDataTypeFromXBRLTag(data[0])
 			if finType != finDataUnknown {
 				for _, str := range data[1:] {
