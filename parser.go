@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"regexp"
 	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/net/html"
 )
