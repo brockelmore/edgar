@@ -354,15 +354,15 @@ func collectDataTags(page io.Reader) map[string]string {
 			link = link[15:len(link)-1]
 			h := strings.Split(link, " ")
 			link = h[2][1:len(h[2]) - 2]
-			var colon string
-			colon = ":"
-			if text[len(text)] == byte(colon) {
-				dataTags[text[:len(text)-1]] = link
-				log.Printf("%s: %s\n", text[:len(text) - 1], link)
-			} else {
-				dataTags[text] = link
-				log.Printf("%s: %s\n", text, link)
-			}
+// 			if text[len(text)] == byte(colon) {
+// 				dataTags[text[:len(text)-1]] = link
+// 				log.Printf("%s: %s\n", text[:len(text) - 1], link)
+// 			} else {
+// 				dataTags[text] = link
+// 				log.Printf("%s: %s\n", text, link)
+// 			}
+			log.Println(text[len(text)])
+			dataTags[text] = link
 		}
   	})
 	return dataTags
