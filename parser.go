@@ -349,8 +349,8 @@ func collectDataTags(page io.Reader) {
     		// For each item found, get the band and title
 		text := s.Text()
 		link, _ := s.Attr("onclick")
-		log.Println(link[:23])
 		if link[:23] == "top.Show.showAR( this, " {
+			link = link[15:len(link)-1]
 			log.Printf("%s: %s\n", text, link)
 		}
   	})	
