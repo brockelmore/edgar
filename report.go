@@ -5,13 +5,23 @@ import (
 	"log"
 )
 
+type DataTable struct {
+	Headers []string `json:"Headers"`
+	Rows map[string]Row `json:"Rows"`
+}
+
+type Row struct {
+	Tag string `json:"Tag"`
+	Values []string	 `json:"Values"`
+}
+
 type financialReport struct {
 	DocType FilingType  `json:"Filing Type"`
 	Entity  *entityData `json:"Entity Information"`
 	Ops     *opsData    `json:"Operational Information"`
 	Bs      *bsData     `json:"Balance Sheet Information"`
 	Cf      *cfData     `json:"Cash Flow Information"`
-	DataTags map[string]map[string]string `json:"DataTags"`
+	DataTags map[string]DataTable  `json:"DataTags"`
 }
 
 type entityData struct {
