@@ -364,8 +364,6 @@ func parseAllReports(cik string, an string) []int {
 	page := getPage(url)
 	z := html.NewTokenizer(page)
 	data, err := parseTableRow(z, false)
-	page2 := getPage(url)
-	collectDataTags(page2)
 	for err == nil {
 		var num int
 		if len(data) > 0 && strings.Contains(data[0], "R") {
@@ -391,6 +389,8 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 			defer wg.Done()
 			page := getPage(url)
 			if page != nil {
+// 					page2 := getPage(url)
+				collectDataTags(page)
 				finReportParser(page, fr, t)
 			}
 		}(baseURL+url, fr, t)
