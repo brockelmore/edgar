@@ -30,6 +30,15 @@ func getPage(url string) io.ReadCloser {
 	return resp.Body
 }
 
+func postPage(url1 string, cn string) io.ReadCloser {
+	resp, err := http.PostForm(url1, url.Values{"company": {cn}})
+	if err != nil {
+		log.Fatal("Query to SEC page ", url1, "failed: ", err)
+		return nil
+	}
+	return resp.Body
+}
+
 func getCompanyCIK(ticker string) string {
 	fmt.Println("getting company CIK")
 	var t bool
