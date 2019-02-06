@@ -395,6 +395,7 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 	var wg sync.WaitGroup
 // 	dataTags := make(map[string]map[string]string)
 	fr := newFinancialReport(docType)
+	fr.DataTags = make(map[string]map[string]string)
 	for t, url := range docs {
 		wg.Add(1)
 		go func(url string, fr *financialReport, t filingDocType) {
