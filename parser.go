@@ -345,29 +345,62 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 
 func collectDataTags(page io.Reader) map[string]string {
 	dataTags := make(map[string]string)
+	dataTable := make(map[string]map[string]interface{})
 	doc, _ := goquery.NewDocumentFromReader(page)
-	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
-    		// For each item found, get the band and title
-		text := s.Text()
-		link, _ := s.Attr("onclick")
-		if link[:23] == "top.Show.showAR( this, " {
-			link = link[15:len(link)-1]
-			h := strings.Split(link, " ")
-			link = h[2][1:len(h[2]) - 2]
-// 			if text[len(text)] == byte(colon) {
-// 				dataTags[text[:len(text)-1]] = link
-// 			log.Printf("%s: %s\n", text[:len(text)], link)
-// 			} else {
-// 				dataTags[text] = link
-// 				log.Printf("%s: %s\n", text, link)
-// 			}
-// 			log.Println(text[len(text)-1])
-			dataTags[text] = link
-		}
-  	})
-	doc.Find(" .pl+ .text ").Each(func(i int, s *goquery.Selection) {
-		log.Println(s.Text())
+// 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
+//     		// For each item found, get the band and title
+// 		text := s.Text()
+// 		link, _ := s.Attr("onclick")
+// 		if link[:23] == "top.Show.showAR( this, " {
+// 			link = link[15:len(link)-1]
+// 			h := strings.Split(link, " ")
+// 			link = h[2][1:len(h[2]) - 2]
+// // 			if text[len(text)] == byte(colon) {
+// // 				dataTags[text[:len(text)-1]] = link
+// // 			log.Printf("%s: %s\n", text[:len(text)], link)
+// // 			} else {
+// // 				dataTags[text] = link
+// // 				log.Printf("%s: %s\n", text, link)
+// // 			}
+// // 			log.Println(text[len(text)-1])
+// 			dataTags[text] = link
+// 			dataTable[text]["link"] = link
+// 		}
+//   	})
+	doc.Find(".report tbody tr").Each(func(i int, s3 *goquery.Selection) {
+		var text string
+		s3.Find("a").Each(func(i int, s *goquery.Selection) {
+		// For each item found, get the band and title
+			text = s.Text()
+			link, _ := s.Attr("onclick")
+			if link[:23] == "top.Show.showAR( this, " {
+				link = link[15:len(link)-1]
+				h := strings.Split(link, " ")
+				link = h[2][1:len(h[2]) - 2]
+				dataTags[text] = link
+				dataTable[text]["link"] = link
+			}
+		})
+		var values []string
+		s3.Find("td").Each(func(i int, s2 *goquery.Selection) {
+			if i == 0 {
+				continue
+			}
+			if s2.Text() != " " {
+				values = append(values, s2.Text())
+			}
+		})
+		dataTabe[text]["values"] = values
+		var headers []string
+		
+		s.Find("th").Each(func(i int, s2 *goquery.Selection) {
+			headers = append(headers, s.Text())
+		})
+		
+		dataTable["headers"] = headers
+		
 	})
+	log.Println(dataTable)
 	return dataTags
 }
 
