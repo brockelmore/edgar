@@ -391,8 +391,8 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 			defer wg.Done()
 			page := getPage(url)
 			if page != nil {
-// 					page2 := getPage(url)
-				collectDataTags(page)
+				page2 := getPage(url)
+				go collectDataTags(page2)
 				finReportParser(page, fr, t)
 			}
 		}(baseURL+url, fr, t)
