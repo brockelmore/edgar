@@ -404,7 +404,7 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 				var dataTags map[string]string
 				page2 := getPage(url)
 				dataTagsSub := collectDataTags(page2)
-				dataTags[string(docType)] = dataTagsSub
+				dataTags[string(t)] = dataTagsSub
 				finReportParser(page, fr, t)
 			}
 		}(baseURL+url, fr, t, dataTags)
