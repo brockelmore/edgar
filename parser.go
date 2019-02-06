@@ -361,7 +361,7 @@ func collectDataTags(page io.Reader) map[string]string {
 // 				dataTags[text] = link
 // 				log.Printf("%s: %s\n", text, link)
 // 			}
-			log.Println(text[len(text)])
+			log.Println(text[len(text)-1])
 			dataTags[text] = link
 		}
   	})
