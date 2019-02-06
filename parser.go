@@ -344,7 +344,7 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 
 
 
-func collectDataTags(page io.Reader) DataTable {
+func collectDataTags(page io.Reader) map[string]string {
 	dataTags := make(map[string]string)
 // 	dataTable.Rows = make(map[string]Row)
 	doc, _ := goquery.NewDocumentFromReader(page)
