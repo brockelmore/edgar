@@ -212,7 +212,7 @@ func parseHyperLinkTag(z *html.Tokenizer, token html.Token) string {
 			href = a.Val
 		case "onclick":
 			onclick = a.Val
-			log.Println(token.Text())
+			log.Println(token.String())
 			if str, err := getFinDataXBRLTag(onclick); err == nil {
 				return str
 			}
