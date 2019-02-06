@@ -5,15 +5,15 @@ import (
 	"log"
 )
 
-type DataTable struct {
-	Headers []string `json:"Headers"`
-	Rows map[string]Row `json:"Rows"`
-}
+// type DataTable struct {
+// 	Headers []string `json:"Headers"`
+// 	Rows map[string]Row `json:"Rows"`
+// }
 
-type Row struct {
-	Tag string `json:"Tag"`
-	Values []string	 `json:"Values"`
-}
+// type Row struct {
+// 	Tag string `json:"Tag"`
+// 	Values []string	 `json:"Values"`
+// }
 
 type financialReport struct {
 	DocType FilingType  `json:"Filing Type"`
