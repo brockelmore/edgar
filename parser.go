@@ -397,7 +397,7 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 	fr := newFinancialReport(docType)
 	for t, url := range docs {
 		wg.Add(1)
-		go func(url string, fr *financialReport, t filingDocType) {
+		go func(url string, fr *financialReport, t filingDocType, dataTags map[string]map[string]string) {
 			defer wg.Done()
 			page := getPage(url)
 			if page != nil {
@@ -407,7 +407,7 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 				dataTags[string(docType)] = dataTagsSub
 				finReportParser(page, fr, t)
 			}
-		}(baseURL+url, fr, t)
+		}(baseURL+url, fr, t, dataTags)
 	}
 	wg.Wait()
 	fr.DataTags = dataTags
