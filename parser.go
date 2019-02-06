@@ -344,7 +344,7 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 
 
 func collectDataTags(page io.Reader) {
-	doc, err := goquery.NewDocumentFromReader(page)
+	doc, _ := goquery.NewDocumentFromReader(page)
 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
     		// For each item found, get the band and title
 		text := s.Text()
