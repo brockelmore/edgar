@@ -212,7 +212,6 @@ func parseHyperLinkTag(z *html.Tokenizer, token html.Token) string {
 			href = a.Val
 		case "onclick":
 			onclick = a.Val
-			log.Println(token.String())
 			if str, err := getFinDataXBRLTag(onclick); err == nil {
 				return str
 			}
@@ -327,7 +326,7 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
     		// For each item found, get the band and title
 		text := s.Text()
 		link, _ := s.Attr("onclick")
-		log.Printf("%s: %s\n", i, text, link)
+		log.Printf("%s: %s\n", text, link)
   	})
 	z := html.NewTokenizer(page)
 	scales := parseFilingScale(z, t)
