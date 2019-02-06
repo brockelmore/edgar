@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-
+	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/net/html"
 )
 
@@ -322,7 +322,13 @@ func parseFilingScale(z *html.Tokenizer, t filingDocType) map[scaleEntity]scaleF
 */
 
 func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*financialReport, error) {
-
+	doc, err := goquery.NewDocumentFromReader(page)
+	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
+    		// For each item found, get the band and title
+		text := s.Text()
+		link, _ := s.Attr("onclick")
+		log.Printf("%s: %s\n", i, text, link)
+  	})
 	z := html.NewTokenizer(page)
 	scales := parseFilingScale(z, t)
 	data, err := parseTableRow(z, true)
