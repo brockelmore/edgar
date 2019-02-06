@@ -343,7 +343,8 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 }
 
 
-func collectDataTags(page io.Reader) {
+func collectDataTags(page io.Reader) map[string]string {
+	var dataTags map[string]string
 	doc, _ := goquery.NewDocumentFromReader(page)
 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
     		// For each item found, get the band and title
@@ -353,9 +354,16 @@ func collectDataTags(page io.Reader) {
 			link = link[15:len(link)-1]
 			h := strings.Split(link, " ")
 			link = h[2][1:len(h[2]) - 2]
-			log.Printf("%s: %s\n", text, link)
+			if text[len(text)] == ":" {
+				dataTags[text[:len(text)-1]] = link
+				log.Printf("%s: %s\n", text[:len(text) - 1], link)
+			} else {
+				dataTags[text] = link
+				log.Printf("%s: %s\n", text, link)
+			}
 		}
-  	})	
+  	})
+	return dataTags
 }
 
 // parseAllReports gets all the reports filed under a given account normalizeNumber
@@ -384,6 +392,7 @@ func parseAllReports(cik string, an string) []int {
 
 func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*financialReport, error) {
 	var wg sync.WaitGroup
+	var dataTags map[string]string
 	fr := newFinancialReport(docType)
 	for t, url := range docs {
 		wg.Add(1)
@@ -391,12 +400,16 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 			defer wg.Done()
 			page := getPage(url)
 			if page != nil {
-				page2 := getPage(url)
-				go collectDataTags(page2)
+				
+				go func(url string, dataTags map[string]string) {
+					page2 := getPage(url)
+					dataTags = collectDataTags(page2)
+				}(url, dataTags)
 				finReportParser(page, fr, t)
 			}
 		}(baseURL+url, fr, t)
 	}
 	wg.Wait()
+	fr.DataTags = dataTags
 	return fr, validateFinancialReport(fr)
 }
