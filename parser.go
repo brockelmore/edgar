@@ -409,7 +409,7 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 		}(baseURL+url, fr, t)
 	}
 	wg.Wait()
-	fr.DataTags = dataTags
+	fr.DataTags[docType] = dataTags
 	log.Println(fr)
 	return fr, validateFinancialReport(fr)
 }
