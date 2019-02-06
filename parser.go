@@ -367,7 +367,7 @@ func collectDataTags(page io.Reader) map[string]string {
   	})
 	doc.Find(" .pl+ .text ").Each(func(i int, s *goquer.Selection) {
 		log.Println(s.Text())
-	}
+	})
 	return dataTags
 }
 
