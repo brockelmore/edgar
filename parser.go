@@ -326,7 +326,9 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
     		// For each item found, get the band and title
 		text := s.Text()
 		link, _ := s.Attr("onclick")
-		log.Printf("%s: %s\n", text, link)
+		if link[:22] == "top.Show.showAR( this, " {
+			log.Printf("%s: %s\n", text, link)
+		}
   	})
 	z := html.NewTokenizer(page)
 	scales := parseFilingScale(z, t)
