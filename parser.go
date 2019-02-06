@@ -345,7 +345,7 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 
 func collectDataTags(page io.Reader) map[string]string {
 	dataTags := make(map[string]string)
-	dataTable := make(map[string]map[string]interface{})
+	dataTable := make(map[string]interface{})
 	doc, _ := goquery.NewDocumentFromReader(page)
 // 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
 //     		// For each item found, get the band and title
@@ -384,17 +384,17 @@ func collectDataTags(page io.Reader) map[string]string {
 		var values []string
 		s3.Find("td").Each(func(i int, s2 *goquery.Selection) {
 			if i == 0 {
-				continue
-			}
-			if s2.Text() != " " {
-				values = append(values, s2.Text())
+			} else {
+				if s2.Text() != " " {
+					values = append(values, s2.Text())
+				}
 			}
 		})
-		dataTabe[text]["values"] = values
+		dataTable[text]["values"] = values
 		var headers []string
 		
-		s.Find("th").Each(func(i int, s2 *goquery.Selection) {
-			headers = append(headers, s.Text())
+		s3.Find("th").Each(func(i int, s2 *goquery.Selection) {
+			headers = append(headers, s2.Text())
 		})
 		
 		dataTable["headers"] = headers
