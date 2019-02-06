@@ -74,7 +74,36 @@ func cikPageParser(page io.Reader) (string, error) {
 	}
 	return "", errors.New("Could not find the CIK")
 }
-
+func cikPostPageParser(page io.Reader) (string, error) {
+	doc, _ := html.Parse(page)
+	r := regexp.MustCompile(`CIK=[+]?\d{2,}$`)
+	var CIK string
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+	    if n.Type == html.ElementNode && n.Data == "a" {
+	        for _, a := range n.Attr {
+	            if a.Key == "href" {
+			m := r.FindStringSubmatch(a.Val)
+			if len(m) > 0 {
+				CIK = strings.Split(m[0], "=")[1]
+			}
+	                break
+	            }
+	        }
+	    }
+	    for c := n.FirstChild; c != nil; c = c.NextSibling {
+	        f(c)
+	    }
+	}
+	f(doc)
+	if CIK != "" {
+		for len(CIK) < 10 {
+			CIK = "0" + CIK
+		}
+		return CIK, nil
+	}
+	return CIK, errors.New("Could not find CIK")
+}
 /*
   The filing page parser
   - The top of the page has a list of reports.
