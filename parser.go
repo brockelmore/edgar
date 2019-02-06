@@ -145,7 +145,6 @@ func parseTableData(z *html.Tokenizer, parseHref bool) string {
 		} else {
 			if token.Type == html.TextToken {
 				str := strings.TrimSpace(token.String())
-				log.Println(str)
 				if len(str) > 0 {
 					return str
 				}
@@ -154,6 +153,7 @@ func parseTableData(z *html.Tokenizer, parseHref bool) string {
 		//Going for the end of the td tag
 		z.Next()
 		token = z.Token()
+		log.Println(token.String())
 	}
 	return ""
 }
