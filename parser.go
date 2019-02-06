@@ -344,7 +344,7 @@ func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*fin
 
 
 func collectDataTags(page io.Reader) map[string]string {
-	var dataTags map[string]string
+	dataTags  = make(map[string]string)
 	doc, _ := goquery.NewDocumentFromReader(page)
 	doc.Find(".report tbody td a").Each(func(i int, s *goquery.Selection) {
     		// For each item found, get the band and title
@@ -356,15 +356,12 @@ func collectDataTags(page io.Reader) map[string]string {
 			link = h[2][1:len(h[2]) - 2]
 // 			if text[len(text)] == byte(colon) {
 // 				dataTags[text[:len(text)-1]] = link
-			log.Printf("%s: %s\n", text[:len(text) - 1], link)
+// 			log.Printf("%s: %s\n", text[:len(text)], link)
 // 			} else {
 // 				dataTags[text] = link
 // 				log.Printf("%s: %s\n", text, link)
 // 			}
 // 			log.Println(text[len(text)-1])
-			if dataTags[text] == nil {
-			    dataTags[text] = string{}
-			}
 			dataTags[text] = link
 		}
   	})
