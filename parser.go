@@ -382,20 +382,22 @@ func collectDataTags(page io.Reader) map[string]string {
     		// For each item found, get the band and title
 		text := s.Text()
 		link, _ := s.Attr("onclick")
-		if link[:23] == "top.Show.showAR( this, " {
-			link = link[15:len(link)-1]
-			h := strings.Split(link, " ")
-			link = h[2][1:len(h[2]) - 2]
-// 			if text[len(text)] == byte(colon) {
-// 				dataTags[text[:len(text)-1]] = link
-// 			log.Printf("%s: %s\n", text[:len(text)], link)
-// 			} else {
-// 				dataTags[text] = link
-// 				log.Printf("%s: %s\n", text, link)
-// 			}
-// 			log.Println(text[len(text)-1])
-			dataTags[text] = link
-// 			dataTable[text]["link"] = link
+		if len(link) > 23 {
+			if link[:23] == "top.Show.showAR( this, " {
+				link = link[15:len(link)-1]
+				h := strings.Split(link, " ")
+				link = h[2][1:len(h[2]) - 2]
+	// 			if text[len(text)] == byte(colon) {
+	// 				dataTags[text[:len(text)-1]] = link
+	// 			log.Printf("%s: %s\n", text[:len(text)], link)
+	// 			} else {
+	// 				dataTags[text] = link
+	// 				log.Printf("%s: %s\n", text, link)
+	// 			}
+	// 			log.Println(text[len(text)-1])
+				dataTags[text] = link
+	// 			dataTable[text]["link"] = link
+			}
 		}
   	})
 // 	doc.Find(".report tbody tr").Each(func(i int, s3 *goquery.Selection) {
