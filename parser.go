@@ -430,7 +430,7 @@ func collectDataTags(page io.Reader) map[string]string {
 // 			headers = append(headers, s2.Text())
 // 	})
 // 	dataTable.Headers = headers
-	log.Println(dataTags)
+// 	log.Println(dataTags)
 	return dataTags
 }
 
