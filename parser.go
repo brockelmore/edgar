@@ -348,7 +348,7 @@ func parseFilingScale(page io.Reader, t filingDocType) map[scaleEntity]scaleFact
 	} else {
 		ret[scaleEntityShares] = scaleMillion
 	}
-	ret[scaleEntityMoney] = scaleMillion
+	ret[scaleEntityMoney] = scaleNone
 	ret[scaleEntityPerShare] = scaleNone
 
 	doc, err := goquery.NewDocumentFromReader(page)
