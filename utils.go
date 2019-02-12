@@ -52,7 +52,7 @@ func filingScale(strs []string, t filingDocType) map[scaleEntity]scaleFactor {
 	} else {
 		ret[scaleEntityShares] = scaleMillion
 	}
-	ret[scaleEntityMoney] = scaleMillion
+	ret[scaleEntityMoney] = scaleNone
 	ret[scaleEntityPerShare] = scaleNone
 	for _, str := range strs {
 		s := strings.ToLower(str)
@@ -71,6 +71,8 @@ func filingScale(strs []string, t filingDocType) map[scaleEntity]scaleFactor {
 					ret[scaleEntityMoney] = scaleThousand
 				} else if strings.Contains(part, "billion") {
 					ret[scaleEntityMoney] = scaleBillion
+				} else if strings.Contains(part, "million") {
+					ret[scaleEntityMoney] = scaleMillion
 				}
 			}
 		}
