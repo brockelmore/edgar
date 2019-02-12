@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"bytes"
+	"io/ioutil"
 	"regexp"
 	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/net/html"
@@ -390,8 +392,10 @@ func parseFilingScale(page io.Reader, t filingDocType) map[scaleEntity]scaleFact
 */
 
 func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*financialReport, error) {
-	z := html.NewTokenizer(page)
-	scales := parseFilingScale(page, t)
+	var buf bytes.Buffer
+        tee := io.TeeReader(page, &buf)
+	z := html.NewTokenizer(&buf)
+	scales := parseFilingScale(tee, t)
 	data, err := parseTableRow(z, true)
 	for err == nil {
 		if len(data) > 0 {
