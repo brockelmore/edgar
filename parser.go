@@ -356,7 +356,6 @@ func parseFilingScale(page io.Reader, t filingDocType) map[scaleEntity]scaleFact
 	  log.Fatal(err)
 	}
 	doc.Find("body table tr th strong").Each(func(i int, sq *goquery.Selection){
-	    log.Println(sq.Text())
 	    s := strings.ToLower(sq.Text())
 	    parts := strings.Split(s, ",")
 	    for _, part := range parts {
