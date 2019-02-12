@@ -341,11 +341,19 @@ func parseTableHeading(z *html.Tokenizer) ([]string, error) {
 // 	}
 // 	return scales
 func parseFilingScale(page io.Reader, t filingDocType) map[scaleEntity]scaleFactor {
-	scales := make(map[scaleEntity]scaleFactor)
-	  doc, err := goquery.NewDocumentFromReader(page)
-	  if err != nil {
-	    log.Fatal(err)
-	  }
+	ret := make(map[scaleEntity]scaleFactor)
+	if t == filingDocEN {
+		ret[scaleEntityShares] = scaleNone
+	} else {
+		ret[scaleEntityShares] = scaleMillion
+	}
+	ret[scaleEntityMoney] = scaleMillion
+	ret[scaleEntityPerShare] = scaleNone
+
+	doc, err := goquery.NewDocumentFromReader(page)
+	if err != nil {
+	  log.Fatal(err)
+	}
 	doc.Find("body table tr th strong").Each(func(i int, sq *goquery.Selection){
 	    log.Println(sq.Text())
 	    s := strings.ToLower(sq.Text())
@@ -370,6 +378,7 @@ func parseFilingScale(page io.Reader, t filingDocType) map[scaleEntity]scaleFact
 		}
 	  }
 	  })
+	return ret
 }
 
 /*
