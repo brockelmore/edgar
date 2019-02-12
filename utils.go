@@ -5,6 +5,7 @@ import (
 	"math"
 	"reflect"
 	"strconv"
+	"log"
 	"strings"
 )
 
@@ -77,6 +78,8 @@ func filingScale(strs []string, t filingDocType) map[scaleEntity]scaleFactor {
 			}
 		}
 	}
+	log.Println(strs)
+	log.Println(ret)
 	return ret
 }
 
