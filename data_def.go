@@ -198,8 +198,6 @@ func setData(fr *financialReport,
 	finType finDataType,
 	val string,
 	scale map[scaleEntity]scaleFactor) error {
-	log.Print("scale is: ")
-	log.Println(scale)
 	setter := func(data interface{},
 		finType finDataType,
 		val string,
