@@ -331,15 +331,45 @@ func parseTableHeading(z *html.Tokenizer) ([]string, error) {
 	return retData, nil
 }
 
-func parseFilingScale(z *html.Tokenizer, t filingDocType) map[scaleEntity]scaleFactor {
+// func parseFilingScale(z *html.Tokenizer, t filingDocType) map[scaleEntity]scaleFactor {
+// 	scales := make(map[scaleEntity]scaleFactor)
+// 	data, err := parseTableHeading(z)
+// 	if err == nil {
+// 		if len(data) > 0 {
+// 			scales = filingScale(data, t)
+// 		}
+// 	}
+// 	return scales
+func parseFilingScale(doc io.Reader, t filingDocType) map[scaleEntity]scaleFactor {
 	scales := make(map[scaleEntity]scaleFactor)
-	data, err := parseTableHeading(z)
-	if err == nil {
-		if len(data) > 0 {
-			scales = filingScale(data, t)
+	  doc, err := goquery.NewDocumentFromReader(res.Body)
+	  if err != nil {
+	    log.Fatal(err)
+	  }
+	doc.Find("body table tr th strong").Each(func(i int, sq *goquery.Selection){
+	    log.Println(sq.Text())
+	    s := strings.ToLower(sq.Text())
+	    parts := strings.Split(s, ",")
+	    for _, part := range parts {
+	      if strings.Contains(part, "share") {
+			// Share scale
+			if strings.Contains(part, "thousand") {
+				ret[scaleEntityShares] = scaleThousand
+			} else if strings.Contains(part, "million") {
+				ret[scaleEntityShares] = scaleMillion
+			}
+		} else if strings.Contains(part, "$") || strings.Contains(part, "usd") {
+			//Money scale
+			if strings.Contains(part, "thousand") {
+				ret[scaleEntityMoney] = scaleThousand
+			} else if strings.Contains(part, "billion") {
+				ret[scaleEntityMoney] = scaleBillion
+			} else if strings.Contains(part, "million") {
+				ret[scaleEntityMoney] = scaleMillion
+			}
 		}
-	}
-	return scales
+	  }
+	  })
 }
 
 /*
@@ -352,7 +382,7 @@ func parseFilingScale(z *html.Tokenizer, t filingDocType) map[scaleEntity]scaleF
 
 func finReportParser(page io.Reader, fr *financialReport, t filingDocType) (*financialReport, error) {
 	z := html.NewTokenizer(page)
-	scales := parseFilingScale(z, t)
+	scales := parseFilingScale(page, t)
 	data, err := parseTableRow(z, true)
 	for err == nil {
 		if len(data) > 0 {
