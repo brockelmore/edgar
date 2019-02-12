@@ -340,9 +340,9 @@ func parseTableHeading(z *html.Tokenizer) ([]string, error) {
 // 		}
 // 	}
 // 	return scales
-func parseFilingScale(doc io.Reader, t filingDocType) map[scaleEntity]scaleFactor {
+func parseFilingScale(page io.Reader, t filingDocType) map[scaleEntity]scaleFactor {
 	scales := make(map[scaleEntity]scaleFactor)
-	  doc, err := goquery.NewDocumentFromReader(res.Body)
+	  doc, err := goquery.NewDocumentFromReader(page)
 	  if err != nil {
 	    log.Fatal(err)
 	  }
