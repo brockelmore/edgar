@@ -27,6 +27,7 @@ type financialReport struct {
 type entityData struct {
 	CollectedData uint64  `json:"Collected Data"`
 	ShareCount    float64 `json:"Shares Outstanding" required:"true" entity:"Shares" bit:"0"`
+	PeriodEndDate string  `json:"Period End Date"`
 }
 
 type opsData struct {
