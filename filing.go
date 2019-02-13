@@ -56,7 +56,7 @@ func (f *filing) ShareCount() (float64, error) {
 func (f *filing) PeriodEnd() (string, error) {
 	if f.FinData != nil && f.FinData.Entity != nil {
 		if isCollectedDataSet(f.FinData.Entity, "PeriodEndDate") {
-			return f.FinData.Entity.ShareCount, nil
+			return f.FinData.Entity.PeriodEndDate, nil
 		}
 	}
 	return 0, errors.New(f.filingErrorString() + "Period End Date")
