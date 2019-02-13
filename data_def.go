@@ -70,6 +70,7 @@ var (
 	finDataWAShares          finDataType = "Weighted Average Share Count"
 	finDataDps               finDataType = "Dividend Per Share"
 	finDataInterest          finDataType = "Interest paid"
+	finDataPeriodEnd	 finDataType = "Period End"
 	finDataUnknown           finDataType = "Unknown"
 
 	//Required Documents list
