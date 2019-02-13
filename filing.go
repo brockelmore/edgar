@@ -59,7 +59,7 @@ func (f *filing) PeriodEnd() (string, error) {
 			return f.FinData.Entity.PeriodEndDate, nil
 		}
 	}
-	return 0, errors.New(f.filingErrorString() + "Period End Date")
+	return "", errors.New(f.filingErrorString() + "Period End Date")
 }
 
 func (f *filing) Revenue() (float64, error) {
