@@ -106,6 +106,7 @@ var (
 		//Entity sheet information
 		"defref_dei_EntityCommonStockSharesOutstanding": finDataSharesOutstanding,
 		"EntityCommonStockSharesOutstanding":            finDataSharesOutstanding,
+		"defref_dei_DocumentPeriodEndDate":		 finDataPeriodEnd,
 	}
 )
 
