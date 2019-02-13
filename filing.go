@@ -53,6 +53,15 @@ func (f *filing) ShareCount() (float64, error) {
 	return 0, errors.New(f.filingErrorString() + "Share Count")
 }
 
+func (f *filing) PeriodEnd() (string, error) {
+	if f.FinData != nil && f.FinData.Entity != nil {
+		if isCollectedDataSet(f.FinData.Entity, "PeriodEndDate") {
+			return f.FinData.Entity.ShareCount, nil
+		}
+	}
+	return 0, errors.New(f.filingErrorString() + "Period End Date")
+}
+
 func (f *filing) Revenue() (float64, error) {
 	if f.FinData != nil && f.FinData.Ops != nil {
 		if isCollectedDataSet(f.FinData.Ops, "Revenue") {
@@ -124,6 +133,8 @@ func (f *filing) ShortTermDebt() (float64, error) {
 	}
 	return 0, errors.New(f.filingErrorString() + "Short Term Debt")
 }
+
+
 
 func (f *filing) LongTermDebt() (float64, error) {
 	if f.FinData != nil && f.FinData.Bs != nil {
