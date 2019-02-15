@@ -11,7 +11,7 @@ import (
 
 type company struct {
 	Company     string                            `json:"Company"`
-	CIK         string                            `json:"-"`
+	CIK         string                            `json:"CIK"`
 	FilingLinks map[FilingType]map[string]string  `json:"-"`
 	Reports     map[FilingType]map[string]*filing `json:"Financial Reports"`
 }
