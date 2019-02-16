@@ -16,6 +16,7 @@ type filing struct {
 func (f filing) String() string {
 	data, err := json.MarshalIndent(f, "", "    ")
 	if err != nil {
+		log.Println(data)
 		log.Fatal("Error marshaling Filing data")
 	}
 	return string(data)
