@@ -74,6 +74,7 @@ func newFinancialReport(docType FilingType) *financialReport {
 func (f financialReport) String() string {
 	data, err := json.MarshalIndent(f, "", "    ")
 	if err != nil {
+		log.Println(f)
 		log.Fatal("Error marshaling financial data")
 	}
 	return string(data)
