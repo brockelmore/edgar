@@ -125,7 +125,7 @@ func generateData(fin *financialReport, name string) float64 {
 					return round(fin.Cf.Dividends * -1 / fin.Ops.WAShares)
 				}
 			} else if isCollectedDataSet(fin.Entity, "ShareCount") {
-				if !math.IsInf(round(fin.Cf.Dividends * -1 / fin.Entity.ShareCount), 0) && !math.isNaN(round(fin.Cf.Dividends * -1 / fin.Entity.ShareCount)){
+				if !math.IsInf(round(fin.Cf.Dividends * -1 / fin.Entity.ShareCount), 0) && !math.IsNaN(round(fin.Cf.Dividends * -1 / fin.Entity.ShareCount)){
 					return round(fin.Cf.Dividends * -1 / fin.Entity.ShareCount)
 				}
 			}
