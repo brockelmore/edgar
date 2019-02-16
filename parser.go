@@ -501,7 +501,7 @@ func parseAllReports(cik string, an string) []int {
 	return reports
 }
 
-func setField(v interface{}, name string, name2 string, value string) error {
+func setField(v interface{}, name string, name2 string, value map[string]string) error {
 	rv := reflect.ValueOf(v)
 	if rv.Kind() != reflect.Ptr || rv.Elem().Kind() != reflect.Struct {
 		return errors.New("v must be pointer to struct")
