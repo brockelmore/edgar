@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"sort"
-	"bytes"
 )
 
 type company struct {
@@ -20,14 +19,8 @@ type company struct {
 func (c company) String() string {
 	data, err := json.MarshalIndent(c, "", "    ")
 	if err != nil {
-		c = bytes.Replace(c, []byte(":NaN"), []byte(":null"), -1) 
-		c = bytes.Replace(c, []byte(":+Inf"), []byte(":null"), -1) 
-		c = bytes.Replace(c, []byte(":-Inf"), []byte(":null"), -1) 
-		data, err = json.MarshalIndent(c, "", "    ")
-		if err != nil {
-			log.Println(err.Error())
-			log.Println("Error marshaling Company data")
-		}
+		log.Println(err.Error())
+		log.Println("Error marshaling Company data")
 	}
 	return string(data)
 }
