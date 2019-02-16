@@ -20,7 +20,7 @@ func (c company) String() string {
 	data, err := json.MarshalIndent(c, "", "    ")
 	if err != nil {
 		log.Println(err.Error())
-		log.Fatal("Error marshaling Company data")
+		log.Println("Error marshaling Company data")
 	}
 	return string(data)
 }
