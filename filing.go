@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"reflect"
+	"math"
 )
 
 type filing struct {
@@ -222,6 +223,12 @@ func (f *filing) WAShares() (float64, error) {
 func (f *filing) DividendPerShare() (float64, error) {
 	if f.FinData != nil && f.FinData.Ops != nil {
 		if isCollectedDataSet(f.FinData.Ops, "Dps") {
+			if math.IsInf(f.FinData.Ops.Dps, 0) {
+				return 0, errors.New(f.filingErrorString() + "Dividend Per Share was Infinite")
+			}
+			if math.IsNan(f.FinData.Ops.Dps) {
+				return 0, errors.New(f.filingErrorString() + "Dividend Per Share was Infinite")
+			}
 			return f.FinData.Ops.Dps, nil
 		}
 	}
