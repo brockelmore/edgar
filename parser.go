@@ -3,7 +3,6 @@ package edgar
 import (
 	"bufio"
 	"errors"
-	"reflect"
 	"fmt"
 	"io"
 	"log"
