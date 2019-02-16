@@ -19,6 +19,7 @@ type company struct {
 func (c company) String() string {
 	data, err := json.MarshalIndent(c, "", "    ")
 	if err != nil {
+		log.Println(data)
 		log.Fatal("Error marshaling Company data")
 	}
 	return string(data)
