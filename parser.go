@@ -3,6 +3,7 @@ package edgar
 import (
 	"bufio"
 	"errors"
+	"reflect"
 	"fmt"
 	"io"
 	"log"
@@ -500,11 +501,36 @@ func parseAllReports(cik string, an string) []int {
 	return reports
 }
 
+func setField(v interface{}, name string, name2 string, value string) error {
+	rv := reflect.ValueOf(v)
+	if rv.Kind() != reflect.Ptr || rv.Elem().Kind() != reflect.Struct {
+		return errors.New("v must be pointer to struct")
+	}
+	rv = rv.Elem()
+	fv := rv.FieldByName(name)
+	if !fv.IsValid() {
+		return fmt.Errorf("not a field name: %s", name)
+	}
+	if !fv.CanSet() {
+		return fmt.Errorf("cannot set field %s", name)
+	}
+	fv2 := fv.FieldByName(name2)
+	if !fv2.IsValid() {
+		return fmt.Errorf("not a field name: %s", name)
+	}
+	if !fv2.CanSet() {
+		return fmt.Errorf("cannot set field %s", name)
+	}
+	fv2.SetString(value)
+	return nil
+}
+
+
 func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*financialReport, error) {
 	var wg sync.WaitGroup
 // 	dataTags := make(map[string]map[string]string)
 	fr := newFinancialReport(docType)
-	fr.DataTags = make(map[string]map[string]string)
+// 	fr.DataTags = make(map[string]map[string]string)
 	for t, url := range docs {
 		wg.Add(1)
 		go func(url string, fr *financialReport, t filingDocType) {
@@ -513,7 +539,8 @@ func parseMappedReports(docs map[filingDocType]string, docType FilingType) (*fin
 			if page != nil {
 				page2 := getPage(url)
 				dataTagsSub := collectDataTags(page2)
-				fr.DataTags[string(t)] = dataTagsSub
+// 				fr.DataTags[string(t)] = dataTagsSub
+				err := setField(&fr, "DataTags", string(t), dataTagsSub)
 				finReportParser(page, fr, t)
 			}
 		}(baseURL+url, fr, t)
