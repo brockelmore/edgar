@@ -35,6 +35,7 @@ var (
 
 		//Operations Sheet info
 		"defref_us-gaap_SalesRevenueNet": finDataRevenue,
+		"defref_us-gaap_ElectricUtilityRevenue": finDataRevenue,
 		"SalesRevenueNet":                finDataRevenue,
 		"defref_us-gaap_Revenues":        finDataRevenue,
 		"Revenues":                       finDataRevenue,
